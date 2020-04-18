@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>YaChu</title>
+    <link href="/src/css/index.css" rel="stylesheet" type="text/css">
+    <!-- vue.js 所使用的element-ui css所需要的樣式套件 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+
+
+    <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <!-- 使用的javacript 是前端框架的vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- vue.js 所使用的element-ui javascript所需要的樣式套件 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="/src/js/index.js"></script>
+</head>
+
+<body style="background-image: url(./src/image/b.jpg)">
+    <div id="web">
+        <!-- 建一個calss，讓裡面所有功能都可以知道vue.js -->
+        <div class="header">
+            <el-tabs>
+                <el-tab-pane>
+                    <span class="labelfeature" slot="label"> Feature </span>
+                    <h3 style="color: bisque; text-align: center;"> Click anywhere look boom effect !</h3>
+                    <div class="cardbox">
+                        <el-tabs :stretch="true">
+                            <!-- stretch平均分配下方標籤的間距 -->
+                            <el-tab-pane>
+                                <!-- 點擊按鈕後觸發 click 事件，執行getTodoList -->
+                                <span class="labelstart" slot="label" @click="getTodoList"> 全部 </span>
+                                <!--placeholder為初始字 v-model綁定vue.js中data 的todoInput -->
+                                <input type="text" class="todo-input" placeholder="請輸入待辦事項" v-model="todoInput"
+                                    @keyup.enter="handleAdd">
+                                <!--按下enter觸發handleAdd-->
+                                <i class="el-icon-position" @click="handleAdd"></i>
+                                <i class="el-icon-delete" @click="handleRest"></i>
+                                <section v-if="loading">Loading</section>
+                                <section v-else>
+                                    <!-- v-for分別讀取todoList的資料  -->
+                                    <div v-for="(item, index) in todoList" :key="item.id" class="todo-item">
+                                        <div class="title-checkbox">
+                                            <input type="checkbox" v-model="item.completed">
+                                            <!-- 勾選後將資料改變各個 itme 中completed的狀態 -->
+                                        </div>
+                                        <!-- 依據item 中completed的狀態 改變其樣式 -->
+                                        <div class="title-text" :class="{completed : item.completed}">
+                                            {{item.title}}
+                                        </div>
+                                        <i class="el-icon-close" @click="handleRemoveItem(item)"></i>
+                                    </div>
+                                </section>
+                            </el-tab-pane>
+                            <el-tab-pane>
+                                <span class="labelundone" slot="label" @click="getUndoneList"> 未完成 </span>
+                                <section v-if="undoloading">Loading</section>
+                                <section v-else>
+                                    <div v-for="(item, index) in undoneList" :key="item.id" class="todo-item">
+                                        <div class="title-checkbox">
+                                            <input type="checkbox" v-model="item.completed" @click="handleEditUndone">
+                                        </div>
+                                        <div class="title-text" :class="{completed : item.completed}">
+                                            {{item.title}}
+                                        </div>
+                                    </div>
+                                </section>
+                            </el-tab-pane>
+                            <el-tab-pane>
+                                <span class="labelexpired" slot="label" @click="getcompletedList"> 已完成 </span>
+                                <section v-if="doloading">Loading</section>
+                                <section v-else>
+                                    <div v-for="(item, index) in completedList" :key="item.id" class="todo-item">
+                                        <div class="title-checkbox">
+                                            <input type="checkbox" v-model="item.completed" @click="handleEditDone">
+                                        </div>
+                                        <div class="title-text" :class="{completed : item.completed}">
+                                            {{item.title}}
+                                        </div>
+                                    </div>
+                                </section>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane>
+                    <span class="labelabout" slot="label"><i class="el-icon-user-solid"></i> About </span>
+                    <div class="exp-text">
+                        在製作todo list的過程中，遇到其中最大的困難就是淺拷貝和深度拷貝的問題。再傳值我做的練習中三個不同狀態中的表單資料
+                        要互相有關聯,卻又要避免讓後面已完成和未完成的這兩種狀態的表單資料直接修改到原表單，因為這容易造成資料失真。
+                        所以我查詢了許多資料發現是淺拷貝和深度拷貝的問題。
+                        淺拷貝說直了就是寫程式常使用的assign這可以使a、b值相同
+                        ，但在object(物件)中如果用assign拷貝資料時會發生a值永遠會跟b值連動，這會讓我們在處
+                        理複製資料時非常困擾所以使用了深度拷貝，只複製b中的值而不複製其位址這樣才不會 a、b 值永遠一起連動。
+                    </div>
+                    <div style="text-align: center;">
+                        <div v-for="(item, index) in a" :key="item.id" class="todo-item">
+                            <div class="title-text">
+                                A物件 : {{item.title}}
+                            </div>
+                        </div>
+                        <div v-for="(item, index) in b" :key="item.id" class="todo-item">
+                            <div class="title-text">
+                                B物件 : {{item.title}}
+                            </div>
+                        </div>
+                        <button @click="assign"> assign</button>
+                        <button @click="deepCopy"> deepCopy</button>
+                        <button @click="reset"> reset</button>
+                        <button @click="changeB"> changeB</button>
+                    </div>
+                    <div class="step-text">
+                        <ul>
+                            <li>
+                                步驟一:請點擊 assgin Button, 這屬於淺考貝的特性, 讓 B assign 至 A，會發現 A 值與 B 值相同
+                            </li>
+                            <i class="el-icon-bell" style="padding:6px">Tip: changeB button 功能是把 B 物件中的值刪除</i>
+                            <li>
+                                步驟二:請點擊 changeB Button 改變 B 值，並且觀察 A 值的變化，A 物件的內容會與 B 一併刪除
+                            </li>
+                            <li>
+                                步驟三:請點擊 reset Button 重置 A、B 物件裡的值再接續觀察深度拷貝
+                            </li>
+                            <li>
+                                步驟四:請點擊 deepCopy Button, 這屬於深度考貝的特性, 讓 B assign 至 A，也會發現 A 值與 B 值相同
+                            </li>
+                            <li>
+                                步驟五:請點擊 changeB Button 改變 B 值，並且觀察 A 值的變化，A 物件的內容並不會與 B 一併被刪除
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer">
+                        <el-divider></el-divider>
+                        <span class="footer-text">Copyright @2020/04 Director By YaChu</span>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane>
+                    <span class="labelanother" slot="label"><a class="label3Link" href="https://vuejs.org/"
+                            target="_blank">
+                            AnotherGate </a></span>
+                    <h1 class="vue-text">Welcome To Vue.js</h1>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).click(function () {
+        $(".cardbox").toggle("explode");
+    });
+</script>
+
+</html>

@@ -1,0 +1,141 @@
+/* 在修改element-ui 這套件時無法像平常直接針對html tag 標籤作樣式修改
+而是需要先使用網頁裡的開發者檢查功能去尋找該套件中的tag 原貌並針對齊修改樣式
+但為了避免往後其他頁面需要此標籤也會一併被修改所以在這之前在賦予它一個標籤 */
+.header .el-tabs__nav-scroll{   
+    float: right;
+    padding-top: 15px;
+    padding-right: 85px;
+}
+
+.labelfeature,
+.labelabout,
+.labelanother{
+    font-size: 20px;    /*字體大小*/
+    color: #f6e58d;
+}
+
+/* Feature 頁面中的css */
+.cardbox {
+    width: 30em;
+    height: 40em;
+    background-color: rgb(39, 60, 117);
+    border-radius: 25px;    
+    margin-left: 35%;   /*邊距*/
+    margin-top: 5%;
+}
+
+.cardbox .el-tabs__nav-scroll{
+    float: none;
+    padding-top: 25px;
+    padding-right: 0px;
+}
+
+
+.labelstart,
+.labelundone,
+.labelexpired{
+    font-size: 23px;
+    color: gray;
+}
+
+.todo-input {
+    width: 70%;
+    padding: 10px 10px;
+    font-size: 16px;
+    margin-bottom: 16px;
+    margin-left: 10px;
+    border-radius: 15px;
+}
+
+.el-icon-position {
+    color: rgb(255, 159, 26);
+}
+
+.el-icon-delete {
+    color: rgb(96, 163, 188);
+}
+
+/* 調整輸入框點擊後的外框線 */
+.todo-input:focus {
+    outline: 0;
+}
+
+.el-icon-position,
+.el-icon-delete{
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.todo-item {
+    margin-bottom: 12px;
+    display: flex;
+    padding-top: 20px;
+}
+
+.title-checkbox {
+    margin-left: 15px;
+    margin-right: 15px;
+    font-size: 20px;
+}
+
+.title-text {
+    width: 80%;
+    margin-left: 5px;
+    font-size: 20px;
+    color: rgb(248, 194, 145)
+}
+
+.title-remove {
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+/* checkbox 為已勾選時的樣式調整 */
+.completed {
+    text-decoration: line-through;  /* text-decoration刪除文字 */
+    color: rgb(156, 136, 255);
+}
+
+.remove-item:hover {
+    color: black;
+}
+
+
+a.label3Link {
+    color: #f6e58d;
+    text-decoration: none;
+}
+
+
+.footer {
+    margin-top: 7em;
+    color: gray;
+    text-align: center; /*文字對齊*/
+}
+
+.exp-text {
+    font-family: DFKai-sb;  /*字體*/
+    padding: 45px;
+    font-size: 18px;
+    text-indent: 27px;  /*第一行縮排*/
+    text-align: left;
+    color: #f6e58d;
+}
+
+li {
+    padding: 10px;
+}
+
+.step-text {
+    font-family: DFKai-sb;
+    padding: 15px;
+    font-size: 16px;
+    text-align: left;
+    color: #f6e58d;
+}
+
+
+.vue-text {
+    color: #f6e58d;
+    text-align: center;
+}
